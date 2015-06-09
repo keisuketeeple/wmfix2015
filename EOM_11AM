@@ -1,0 +1,122 @@
+##THIS FIRST SET OF CODE INVESTIGATES THE BIMODALITY OF 
+##EOM DATA
+##need plyr package
+library(plyr);
+
+##create loop for multiple years and currencies
+year1<-2011;
+currency<-c("EURUSD");
+
+## read in the selected data
+setwd("~/Desktop/");
+k <- read.table(paste("HISTDATA_COM_ASCII_",currency,"_M1",year1,
+                      "/DAT_ASCII_",currency,"_M1_",year1,".csv",
+                      sep=""),
+                sep =";");
+
+## add meaningful column names
+colnames(k) <- c("Date", "Open", "High", "Low", "Close", "Volume");
+
+## get the time 
+k$Time <- ldply(strsplit(as.character(k$Date),
+                         " "))[,2];
+k$Time <- as.numeric(k$Time);
+
+## clean up date
+k$Date <- ldply(strsplit(as.character(k$Date),
+                         " "))[,1];
+k$Date <- as.numeric(k$Date);
+
+## split date into year month day
+k$Year <- as.numeric(substr(as.character(k$Date),1,4));
+k$Month <- as.numeric(substr(as.character(k$Date),5,6));
+k$Day <- as.numeric(substr(as.character(k$Date),7,8));
+
+## end of month function
+f<-k;
+for (i in 1:12) {
+  ## store only the data for that month in a new DF
+  t <- subset(f, Month == i);
+  ## get the last day of that month
+  max <- max(t$Day);
+  ## get a list of all entries
+  ## in that month which are not
+  ## the last day
+  remove <- which(f$Month == i & f$Day != max);
+  ## remove all those rows
+  f <- f[-remove,];
+}
+
+##minute average for end of month
+minute.average2 <- aggregate(f$Close,
+                            by = list(f$Time),
+                            mean);
+
+#plotting 
+plot(minute.average2$Group.1,minute.average2$x,
+     main=paste(year1,currency),xlim=c(0,240000),
+     xlab="Time of Day 0-24 HR",ylab="Exchange Rate");
+abline(h=1.397);
+abline(h=1.408);
+abline(v=170000);
+
+
+##THIS SECOND SET OF CODE INVESTIGATES WHETHER 11AM 
+##IS A GOOD PROXY FOR THE FIX
+
+#calculate minute average for all data points
+minute.average <- aggregate(k$Close,
+                             by = list(k$Time),
+                             mean);
+#take 1030 to 1130
+hour.window<-subset(minute.average,Group.1>=103000 & Group.1<=113000);
+hour.window2<-subset(minute.average2,Group.1>=103000 & Group.1<=113000);
+
+#plot
+#plot(factor(hour.window$Group.1),hour.window$x,
+#     main=paste(year1,currency),
+ #    xlab="Time of Day 10:30 to 11:30",ylab="Exchange Rate");
+#abline(v=110000);
+
+plot(factor(hour.window2$Group.1),hour.window2$x,
+     main=paste(year1,currency,"EOM"),
+     xlab="Time of Day 10:30 to 11:30",ylab="Exchange Rate");
+abline(v=110000);
+
+
+##ADDITIONAL INVESTIGATION OF THE 11AM FIX
+
+#standard deviations per minute
+minute.sd <- aggregate(k$Close,
+                            by = list(k$Time),
+                            sd);
+minute.sd2 <- aggregate(f$Close,
+                       by = list(f$Time),
+                       sd);
+
+#(value_t-fix)/sd_t 
+investigate1.all<-(minute.average$x-
+                minute.average$x[minute.average$Group.1==110000])/
+                minute.sd$x;
+investigate1.EOM<-(minute.average2$x-
+                minute.average2$x[minute.average2$Group.1==110000])/
+                minute.sd2$x;
+
+#(sd_t-sd_fix)/sd_avg 
+
+investigate2.all<-(minute.sd$x-
+                minute.sd$x[minute.sd$Group.1==110000])/
+                mean(minute.sd$x);
+
+investigate2.EOM<-(minute.sd2$x-
+                minute.sd2$x[minute.sd2$Group.1==110000])/
+                mean(minute.sd2$x);
+
+#plotting
+plot(factor(minute.average2$Group.1),investigate1.EOM,
+     main=paste(year1,currency,"EOM"),
+     xlab="Time of Day 0-24HR",ylab="(value_t-fix)/sd_t");
+
+plot(factor(minute.average2$Group.1),investigate2.EOM,
+     main=paste(year1,currency,"EOM"),
+     xlab="Time of Day 0-24HR",ylab="(sd_t-sd_fix)/sd_avg");
