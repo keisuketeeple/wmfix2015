@@ -1,0 +1,176 @@
+%Report.............................
+
+\documentclass[12pt,letterpaper]{article}
+\setlength{\parindent}{0cm}
+
+
+%Packages.............................................
+\usepackage{changepage} 
+\usepackage{enumitem}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{hyperref}
+\usepackage{mathtools}
+%\usepackage[pdftex]{graphicx}
+\usepackage{natbib} %This is a bibliography package
+%General Commands.....................................
+
+\parskip=.06in
+\textheight 8.75in
+\topmargin -0.5in
+\oddsidemargin 0.125in
+\textwidth 6.25in
+
+\newtheorem{assumption}{Assumption}
+\newtheorem{axiom}{Axiom}
+\newtheorem{claim}{Claim}
+\newtheorem{conjecture}{Conjecture}
+\newtheorem{corollary}{Corollary}
+\newtheorem{definition}{Definition}
+\newtheorem{lem}{Lemma}
+\newtheorem{proposition}{Proposition}
+\newtheorem{rem}{Remark}
+\newtheorem{theo}{Theorem}
+
+
+
+%................................................
+
+
+\begin{document}
+What should be the objective of the corporation? With incomplete markets, firm owners may disagree on the answer to this question (Magill and Quinzii 1996). In the case of partnerships where firm shares are not actively traded, Dr\`eze (1974) proposed to use transfer payments among partners to reach unanimity. An equivalent formulation is as follows: each partner's present-value vector is weighted by her initial investment, leading to a well-defined firm objective function.\\\\
+For corporations with actively traded shares, a new question arises: for whom should the firm be valued? Buyers, sellers, owners, or some other group? Grossman and Hart (1979) make a reasonable and now well-accepted  assumption, which they call competitive price perceptions: agents use their own present value vector to value future income streams. Under this assumption, owners value the firm and the analysis collapses to that of the simpler partnership.\\\\
+Consistent with this approach, the objective of the firm is to maximize the average of the shareholder's valuation, weighted not only by current ownership but also marginal utilities of owners:
+\begin{equation*}
+    \sum_h\int_\theta\int_b\theta\lambda_t(\theta,b,h)[d_t+(1-\phi \Delta_t^-(\theta,b,h))q_t]d\Gamma(\theta,b,h)
+\end{equation*}
+subject to:
+\begin{align*}
+    &q_t=\mathcal{L}^d_td_{t+1}+\mathcal{L}^d_t(1-\Phi_t)q_{t+1},\\
+    &d_t=F(k_t,k_{t+1}),
+\end{align*}
+where $\Gamma(\theta,b,h)$ denotes the cross-sectional distribution over portfolio holdings and employment status. We next define:
+\begin{equation*}
+    \overline{\Phi}_t=\frac{\phi\sum_h\int_\theta\int_b\theta\lambda_t(\theta,b,h) \Delta_t^-(\theta,b,h)d\Gamma(\theta,b,h)}{\sum_h\int_\theta\int_b\theta\lambda_t(\theta,b,h) d\Gamma(\theta,b,h)}
+\end{equation*}which can be used to rewrite the firm problem:
+\begin{equation*}
+    \max_{\{k_{t+s}\}_{s\geq1}}d_t+\frac{1-\overline{\Phi}_t}{1-\Phi_{t-1}}\sum_{s=1}^\infty \prod_{z=0}^{s-1}((1-\Phi_{t+z-1})\mathcal{L}^d_{t+z})d_{t+s}
+\end{equation*}
+subject to:
+\begin{align*}
+    d_t=F(k_t,k_{t+1})
+\end{align*}
+The variable $\overline{\Phi}_t$ is agreed upon by owners to be used in the firm valuation, while the variable $\Phi_t$ is used by buyers for firm valuation. When $\phi=0$, the firm ceases to be a risky venture so there is no disagreement among agents on its valuation, even with incomplete markets. When $\phi>0$, the owner and buyer valuations need not coincide. Recall the definition of $\Phi_t$:
+\begin{equation*}
+    \Phi_t=\frac{\phi E[\lambda_{t+1}(\Theta_{t+1},\mathcal{B}_{t+1},h')\Delta^-_{t+1}(\Theta_{t+1},\mathcal{B}_{t+1},h')]}{E[\lambda_{t+1}(\Theta_{t+1},\mathcal{B}_{t+1},h')]}
+\end{equation*}which does not depend on $(\theta,b,h)$ for buyers. Focusing on steady states where $\overline{\Phi}_t=\overline{\Phi}$ and $\Phi_t=\Phi$, $\Phi$ can be written:
+\begin{equation*}
+    \Phi=\frac{\phi \sum_h\int_\theta\int_b\Theta_{t+1}\lambda_{t+1}(\Theta_{t+1},\mathcal{B}_{t+1},h')\Delta^-_{t+1}(\Theta_{t+1},\mathcal{B}_{t+1},h')\mathbbm{1}^{buyer}dF(h'|h)d\Gamma(\theta,b,h)}{\sum_h\int_\theta\int_b\Theta_{t+1}\lambda_{t+1}(\Theta_{t+1},\mathcal{B}_{t+1},h')\mathbbm{1}^{buyer}dF(h'|h)d\Gamma(\theta,b,h)}
+\end{equation*}
+where $\mathbbm{1}^{buyer}$ denotes the indicator function. $\overline{\Phi}$ can be written:
+\begin{equation*}
+    \overline{\Phi}=\frac{\phi \sum_h\int_\theta\int_b\Theta_{t+1}\lambda_{t+1}(\Theta_{t+1},\mathcal{B}_{t+1},h')\Delta^-_{t+1}(\Theta_{t+1},\mathcal{B}_{t+1},h')dF(h'|h)d\Gamma(\theta,b,h)}{\sum_h\int_\theta\int_b\Theta_{t+1}\lambda_{t+1}(\Theta_{t+1},\mathcal{B}_{t+1},h')dF(h'|h)d\Gamma(\theta,b,h)}
+\end{equation*}
+The intuition is as follows. If buyers tend to buy tomorrow, then $\Phi<\overline{\Phi}$ and the firm faces a problem of present bias. The firm is consistently undervalued by current owners, who value $d_t$ disproportionately more than the risky continuation value $(1-\phi\Delta_t^-)q_t$ because of a high likelihood of sale tomorrow. If buyers tend to sell tomorrow, then $\Phi>\overline{\Phi}$ and the firm faces a problem of future bias. The firm is overvalued by current owners, who are unlikely to have to sell tomorrow and hence the risky continuation value $(1-\phi\Delta_t^-)q_t$ receives disproportionately more weight than $d_t$. The transition matrix over the income process $h$ is one tool to calibrate this persistence, and hence the difference $(\Phi-\overline{\Phi})$.
+\newpage
+%\textbf{\textit{Summary}}: Redefine $\overline{\Phi}=\int\theta \Phi(\theta,b,h) d\Gamma(\theta,b) dF(h)$.\\\\
+%Consider the following example (Magill and Quinzii). Households maximize:
+%\begin{equation*}
+%    u^i(x^i)=v_0^i(x_0^i)+\sum_s\rho_sv_1^i(x_s^i)
+%\end{equation*}
+%subject to:
+%\begin{equation*}
+%    x^i_0+\frac{\xi^i}{1+r}=\omega^i_0+y_0,\hspace{.4cm}x_s^i=\omega_s^i+\xi^i+y_s\hspace{.1cm}\forall s
+%\end{equation*}The agent's present value vector is: 
+%\begin{equation*}
+%    \frac{\pi_s^i}{\rho_s}=\frac{v_1^i'(x_s^i)}{v_0^i'(x_0^i)}
+%\end{equation*}
+%First order conditions yield:
+%\begin{equation*}
+%    \frac{1}{1+r}=\frac{E[v_1^i'(x^i)]}{v_0^i'(x_0^i)}
+%\end{equation*}
+%With single ownership, firms should maximize:
+%\begin{align*}
+%    \pi^i\cdot y=&y_0+\sum_s\rho_s\frac{\pi^i_s}{\rho_s}y_s\\
+%    =&y_0+E[\pi^i/\rho]E[y]+\textrm{Cov}(\pi^i/\rho,y)\\
+%    =&y_0+\frac{1}{1+r}\left(E[y]+\textrm{Cov}\left(\frac{v_1^i'(x^i)}{E[v_1^i'(x^i)]},y\right)\right)
+%\end{align*}
+%With multiple owners, firms should maximize:
+%\begin{align*}
+%    \sum_i\theta^i\pi^i\cdot y
+%    =&y_0+\frac{1}{1+r}\left(E[y]+\textrm{Cov}\left(\sum_i\theta^i\frac{v_1^i'(x^i)}{E[v_1^i'(x^i)]},y\right)\right)
+%\end{align*}
+%\newpage
+%In our model the agent's present value vector is:
+%\begin{equation*}
+%    \frac{\pi^i_h}{\rho_h}=\frac{\beta \lambda^i'_h}{\lambda^i_0 }
+%\end{equation*}
+%First order conditions yield:
+%\begin{equation*}
+%    \frac{1}{1+r}\geq \frac{\beta E[\lambda^i']}{\lambda^i_0}
+%\end{equation*}
+%With single ownership firms should maximize:
+%\begin{align*}
+%    \pi^i\cdot (d'+(1-\tilde{\Phi}^i')q')=&\sum_h\rho_h\frac{\pi^i_h}{\rho_h}(d'+(1-\tilde{\Phi}^i'_h)q')\\=&E[\pi^i/\rho](d'+q')-q'(E[\pi^i/\rho]E[\tilde{\Phi}^i']+\textrm{Cov}(\pi^i/\rho,\tilde{\Phi}^i'))\\
+%    \leq&\frac{d'+q'}{1+r}-\frac{q'}{1+r}\left(E[\tilde{\Phi}^i']+\textrm{Cov}\left(\frac{\lambda^i'}{E[\lambda^i']},\tilde{\Phi}^i'\right)\right)
+%\end{align*}
+%With multiple owners, firms should maximize:
+%\begin{equation*}
+%    \sum_i\theta^i\pi^i\cdot (d'+(1-\tilde{\Phi}^i')q')\leq
+%    \frac{d'+q'}{1+r}-\frac{q'}{1+r}\sum_i\theta^i\left(E[\tilde{\Phi}^i']+\textrm{Cov}\left(\frac{\lambda^i'}{E[\lambda^i']},\tilde{\Phi}^i'\right)\right)
+%\end{equation*}
+%\newpage
+%\textbf{Proposition 1 (Unconstrained Buyers)}: Buyers are unconstrained when the borrowing limit $\overline{b}$ is defined as in (2) for fixed equilibrium variables $(r,w,d)$. Furthermore, such a borrowing limit is continuous in those variables $\overline{b}(r,w,d)$.\\
+%\begin{adjustwidth}{1cm}{}
+%\textit{Proof}: First fix $(r,w,d)$. Define, for each individual, the following set:
+%\begin{equation*}
+%    \overline{b}(\theta,b,h)=\left\{\overline{b}:\hspace{.1cm}\frac{\overline{b}}{1+r}=c(\theta,b,h,\overline{b})-wh-d\theta-b\right\}
+%\end{equation*}where we have made explicit the dependence of the policy function on the borrowing limit. The object in the brackets should be interpreted as how much the agent who neither buys nor sells needs to borrow to sustain optimal consumption levels.  To see that such a fixed point exists for each $(\theta,b,h)$, take a small $\overline{b}=(-wh-d\theta-b)(1+r)$. Then the equality in the brackets becomes an inequality:
+%\begin{equation*}
+%    0\leq c(\theta,b,h,\overline{b})
+%\end{equation*}Next we take a large $\overline{b}=b^*(\theta)+q\theta(1+r)$, where the natural borrowing limit is defined:
+%\begin{equation*}
+%    b^*(\theta)=\frac{1+r}{r}(wh_{low}+d\theta)
+%\end{equation*}This can be derived as the solution to:
+%\begin{equation*}
+%    -\frac{b^*}{1+r}=wh_{low}+d\theta-b^*
+%\end{equation*}which represents the budget constraint under zero consumption, maximal borrowing, and low income shocks.  Plugging such a $\overline{b}$ into the equality in the brackets:
+%\begin{equation*}
+%    wh+d\theta+b+\frac{b^*(\theta)}{1+r}+q\theta\geq c(\theta,b,h,\overline{b})
+%\end{equation*}The inequality holds because the left hand side is the maximum wealth an agent can amass given $(\theta,b,h)$. This upper bound is not tight for several reasons. In reality an agent could sell her stock for $q\theta$ or retain it for its dividends, $d\theta$, not both. Also in the case of stock sales, there would be an additional quadratic penalty term subtracted from the left hand side. 
+%Next we show that the function:
+%\begin{equation*}
+%    f(\overline{b})=c(\theta,b,h,\overline{b})-\frac{\overline{b}}{1+r}
+%\end{equation*}is strictly decreasing in $\overline{b}$ for fixed $(\theta,b,h)$. The intuition is as follows: relaxing the borrowing limit may certainly induce agents to borrow more and consume more. However they also choose to sell less stock, which makes the function $f(\overline{b})$ decrease strictly. To see this formally, by the envelope theorem:
+%\begin{equation}
+%    V_{\overline{b}}(\theta,b,h)\ni\gamma+\beta E[V_{\overline{b}}(\theta',b',h')]
+%\end{equation}Notice we can recover a similar expression by taking the supergradient of the value function evaluated at the policy functions:
+%\begin{equation*}
+%    V_{\overline{b}}(\theta,b,h)=\frac{d}{d\overline{b}}[u(c(\theta,b,h,\overline{b}))+\beta E[V(\theta',b',h')]]
+%\end{equation*}Combining with (1) yields:
+%\begin{equation*}
+%    \gamma\in \frac{d}{d\overline{b}}[u(c(\theta,b,h,\overline{b}))]
+%\end{equation*}
+%A real-valued function with non-empty superdifferential for all $\overline{b}$ is concave. Hence we can use the tools of convex analysis, \textcolor{red}{including the chain rule:}
+%\begin{equation*}
+ %   \frac{\gamma}{\lambda}\in  \frac{dc}{d\overline{b}}
+%\end{equation*}
+% But now by rearranging the first order condition on $(b')$:
+%\begin{equation*}
+%\frac{\gamma}{\lambda}-\frac{1}{1+r}<0
+%\end{equation*}which yields our desired condition on $f(\overline{b})$: its supergradient always has a strictly negative element. Now our construction of the borrowing limit:
+%\begin{equation}
+%    \overline{b}=\inf_{\theta,b,h}\hspace{.1cm}\overline{b}(\theta,b,h)
+%\end{equation}By construction, then for all $(\theta,b,h)$:
+%\begin{equation*}
+%    c(\theta,b,h,\overline{b})-\frac{\overline{b}}{1+r}\geq c(\theta,b,h,\overline{b}(\theta,b,h))-\frac{\overline{b}(\theta,b,h)}{1+r}= wh+d\theta+b
+%\end{equation*}so that anyone at the borrowing limit must be a seller.\footnote{Notice that nothing guarantees $-\overline{b}\leq 0$ in this construction. A positive borrowing limit should be interpreted as mandatory savings.} Now consider a small perturbation in $(r,w,d)$. The desired continuity result follows from the fact that zeros of a strictly decreasing continuous function are continuous in its parameters. \\
+
+%\end{adjustwidth}
+\end{document}
+
+
